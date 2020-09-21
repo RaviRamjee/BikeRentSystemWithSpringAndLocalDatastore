@@ -3,13 +3,15 @@
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.FilterOperator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Update Bike</title>
 <style>
 ul {
   list-style-type: none;
@@ -58,6 +60,7 @@ li a:hover:not(.active) {
 
 		$("#submit").click(function(){
 			var bikeData = {};
+			bikeData["bikeId"] = $("#bikeId").val();
 			bikeData["tariffId"] = $("#tariffId").val();
 			bikeData["bikeName"] = $("#bikeName").val();
 			bikeData["bikeDescription"] = $("#bikeDescription").val();
@@ -78,15 +81,15 @@ li a:hover:not(.active) {
 			bikeData["status"] = $("#status").val();
 			bikeData["bikeImage"] = $("#bikeImage").val();
 			
-		    alert('do you want to add Bike ?')
+		    alert('do you want to update Bike ?')
 			$.ajax({
-				type : "POST",
+				type : "PUT",
 				contentType : "application/json",
-				url : "addBike",
+				url : "updateBike",
 				data : JSON.stringify(bikeData),
 				dataType : 'json',				
 				success: function() {       
-			          alert('added succesfully')
+			          alert('updated succesfully')
 			         
 					},
 					error: function(data) {
@@ -139,30 +142,79 @@ if(session.getAttribute("adminEmail")==null)
 						<div class="contacts-form"
 							style="background-color: rgba(80, 54, 84, 0.6); height: 100%">
 							<!-- <a href="./UserDetails.html">Show Users</a>&nbsp <a href="./UpdateUserById.html">Update user</a>&nbsp <a href="./DeleteUser.html">Delete User</a> -->
-							<h1 style="font-size: 200%; color: White" class="blog-title">Add Bike</h1>
+							<h1 style="font-size: 200%; color: White" class="blog-title">Update Bike</h1>
 							<div id="success"></div>
-							
+							<form id="contactForm">
 							<%
+							
+							String bikeId=request.getParameter("bikeId");
 							//getting datastore service
 							DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-
-						    String tariffId="";
+                                 String tariffId1=""; 
+                         		 String bikeName="";
+                         		 String bikeDescription="";
+                         		 String bikeCategory="";
+                         		 String bikeCompany="";
+                         		 String bikeModel="";
+                         		 String bikeRCNo="";
+                         		 String bikeRCName="";
+                         		 String bikeRCRegDate="";
+                         		 String bikeRCExpDate="";
+                         		 String bikeRCCHNO="";
+                         		 String bikeRCEnginNo="";
+                         		 String bikeYearMfg="";
+                         		 int bikeNoOfGear;
+                         		 String bikeColor="";
+                         		 int selfstart;
+                         		 int bikeEnginCC;
+                         		 int status;
+                         		 String bikeImage="";
+                         		 
+                                  Query q1 = new Query("Bike").addFilter("bikeId", FilterOperator.EQUAL, bikeId);
+      							PreparedQuery pq1 = ds.prepare(q1);
+      							for (Entity e : pq1.asIterable()) {
+      								tariffId1 = e.getProperty("tariffId").toString();
+      								bikeName = e.getProperty("bikeName").toString();
+      								bikeDescription = e.getProperty("bikeDescription").toString();
+      								bikeCategory = e.getProperty("bikeCategory").toString();
+      								bikeCompany = e.getProperty("bikeCompany").toString();
+      								bikeModel = e.getProperty("bikeModel").toString();
+      								bikeRCNo=  e.getProperty("bikeRCNo").toString();
+      								bikeRCName = e.getProperty("bikeRCName").toString();
+      								bikeRCRegDate = e.getProperty("bikeRCRegDate").toString();
+      								bikeRCExpDate = e.getProperty("bikeRCExpDate").toString();
+      								bikeRCCHNO = e.getProperty("bikeRCCHNO").toString();
+      								bikeRCEnginNo = e.getProperty("bikeRCEnginNo").toString();
+      								bikeYearMfg=  e.getProperty("bikeYearMfg").toString();
+      								bikeNoOfGear = Integer.parseInt(e.getProperty("bikeNoOfGear").toString());
+      								bikeColor = e.getProperty("bikeColor").toString();
+      								selfstart = Integer.parseInt(e.getProperty("selfStart").toString());
+      								bikeEnginCC =Integer.parseInt( e.getProperty("bikeEnginCC").toString());
+      								status =Integer.parseInt(e.getProperty("status").toString());
+      								bikeImage = e.getProperty("bikeImage").toString();
+      								
+                                  %>
+                                  
+                                  <div class="form-group col-lg-6">
+                                      <label for="exampleInputEmail1">Bike id</label>
+                                      <input type="hidden" name="bikeId" class="form-control" id="bikeId" placeholder="Enter Bike_name" value="<%= bikeId%>">
+                                  </div>
+                                  
+                                  <% 
+                            String tariffId="";
 						    String tariffName="";
 							//Query object for fetching the data from datastore
 							Query q = new Query("Tariff");
 							PreparedQuery pq = ds.prepare(q);
 									%>
 									
-
-							<form id="contactForm">
-								
                                  <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Tariff Name</label>
-                                      <select name="tariffId" class="form-control" id="tariffId" placeholder="Enter tariff name">
+                                      <select name="tariffId" class="form-control" id="tariffId" placeholder="Enter tariff name" value="<%=tariffId1 %>">
                                          <% 
-							for (Entity e : pq.asIterable()) {
-								tariffId=  e.getProperty("tariffId").toString();
-								tariffName = e.getProperty("tariffName").toString();
+							for (Entity e1 : pq.asIterable()) {
+								tariffId=  e1.getProperty("tariffId").toString();
+								tariffName = e1.getProperty("tariffName").toString();
 							%>
                                           <option value="<%= tariffId%>"><%= tariffName %></option>
                                           <%} %>
@@ -170,16 +222,16 @@ if(session.getAttribute("adminEmail")==null)
                                   </div>
 								 <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike name</label>
-                                      <input type="text" name="bikeName" class="form-control" id="bikeName" placeholder="Enter Bike_name">
+                                      <input type="text" name="bikeName" class="form-control" id="bikeName" placeholder="Enter Bike_name" value="<%= bikeName%>">
                                   </div>
                                   <div class="form-group col-lg-6">
                                       <label for="exampleInputPassword1">Bike description</label>
-                                      <input type="text" name="bikeDescription" class="form-control" id="bikeDescription" placeholder="Enter Bike_description">
+                                      <input type="text" name="bikeDescription" class="form-control" id="bikeDescription" placeholder="Enter Bike_description"  value="<%= bikeDescription%>">
                                   </div>
                                   
                                   <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Select Bike Category</label>
-                                      <select name="bikeCategory" class="form-control" id="bikeCategory" placeholder="#">
+                                      <select name="bikeCategory" class="form-control" id="bikeCategory" placeholder="#"  value="<%= bikeCategory%>">
                                           <option value="Scooty">Scooty</option>
                                           <option value="Tourer">Tourer</option>
                                           <option value="Adventure">Adventure</option>
@@ -188,75 +240,76 @@ if(session.getAttribute("adminEmail")==null)
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike company</label>
-                                      <input type="text" name="bikeCompany" class="form-control" id="bikeCompany" placeholder="Enter Bike_company">
+                                      <input type="text" name="bikeCompany" class="form-control" id="bikeCompany" placeholder="Enter Bike_company"  value="<%= bikeCompany%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike Model</label>
-                                      <input type="text" name="bikeModel" class="form-control" id="bikeModel" placeholder="Enter Bike_Model">
+                                      <input type="text" name="bikeModel" class="form-control" id="bikeModel" placeholder="Enter Bike_Model"  value="<%= bikeModel%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike RC No</label>
-                                      <input type="text" name="bikeRCNo" class="form-control" id="bikeRCNo" placeholder="Enter Bike_RC_No">
+                                      <input type="text" name="bikeRCNo" class="form-control" id="bikeRCNo" placeholder="Enter Bike_RC_No"  value="<%= bikeRCNo%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike RC Name</label>
-                                      <input type="text" name="bikeRCName" class="form-control" id="bikeRCName" placeholder="Enter Bike_RC_Name">
+                                      <input type="text" name="bikeRCName" class="form-control" id="bikeRCName" placeholder="Enter Bike_RC_Name"  value="<%= bikeRCName%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike RC RegDate</label>
-                                      <input type="date" name="bikeRCRegDate" class="form-control" id="bikeRCRegDate" placeholder="Enter Bike_RC_RegDate">
+                                      <input type="date" name="bikeRCRegDate" class="form-control" id="bikeRCRegDate" placeholder="Enter Bike_RC_RegDate"  value="<%= bikeRCRegDate%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike RC ExpDate</label>
-                                      <input type="date" name="bikeRCExpDate" class="form-control" id="bikeRCExpDate" placeholder="Bike_RC_ExpDate">
+                                      <input type="date" name="bikeRCExpDate" class="form-control" id="bikeRCExpDate" placeholder="Bike_RC_ExpDate"  value="<%= bikeRCExpDate%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike RC CHNO</label>
-                                      <input type="text" name="bikeRCCHNO" class="form-control" id="bikeRCCHNO" placeholder="Enter Bike_RC_CHNO">
+                                      <input type="text" name="bikeRCCHNO" class="form-control" id="bikeRCCHNO" placeholder="Enter Bike_RC_CHNO"  value="<%= bikeRCCHNO%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike RC EnginNo</label>
-                                      <input type="text" name="bikeRCEnginNo" class="form-control" id="bikeRCEnginNo" placeholder="Enter Bike_RC_EnginNo">
+                                      <input type="text" name="bikeRCEnginNo" class="form-control" id="bikeRCEnginNo" placeholder="Enter Bike_RC_EnginNo"  value="<%= bikeRCEnginNo%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike_YearMfg</label>
-                                      <input type="text" name="bikeYearMfg" class="form-control" id="bikeYearMfg" placeholder="Enter Bike_YearMfg">
+                                      <input type="text" name="bikeYearMfg" class="form-control" id="bikeYearMfg" placeholder="Enter Bike_YearMfg"  value="<%= bikeYearMfg%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike NoOfGear</label>
-                                      <input type="text" name="bikeNoOfGear" class="form-control" id="bikeNoOfGear" placeholder="Enter Bike_NoOfGear">
+                                      <input type="text" name="bikeNoOfGear" class="form-control" id="bikeNoOfGear" placeholder="Enter Bike_NoOfGear"  value="<%= bikeNoOfGear%>">
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike color</label>
-                                      <input type="text" name="bikeColor" class="form-control" id="bikeColor" placeholder="Enter Bike_color">
+                                      <input type="text" name="bikeColor" class="form-control" id="bikeColor" placeholder="Enter Bike_color"  value="<%= bikeColor%>">
                                   </div>
                                   <div class="form-group col-lg-6">
                                   <label for="exampleInputFile">Self Start</label>
-                                      <select name="selfstart" id="selfstart" class="form-control">
+                                      <select name="selfstart" id="selfstart" class="form-control"  value="<%= selfstart%>">
                                           <option value="1">Yes</option>
                                           <option value="0">No</option>
                                       </select>
                                   </div>
                                   <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike Engin CC</label>
-                                      <input type="text" name="bikeEnginCC" class="form-control" id="bikeEnginCC" placeholder="Enter Bike_Engin_CC">
+                                      <input type="text" name="bikeEnginCC" class="form-control" id="bikeEnginCC" placeholder="Enter Bike_Engin_CC"  value="<%= bikeEnginCC%>">
                                   </div>
                                   <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Status</label>
-                                      <select name="status" id="status" class="form-control">
+                                      <select name="status" id="status" class="form-control"  value="<%= status%>">
                                           <option value="1">Active</option>
                                           <option value="0">Non Active</option>
                                       </select>
                                   </div>
                                    <div class="form-group col-lg-6">
                                       <label for="exampleInputEmail1">Bike Image link</label>
-                                      <input type="text" name="bikeImage" class="form-control" id="bikeImage" placeholder="Bike Image Link">
+                                      <input type="text" name="bikeImage" class="form-control" id="bikeImage" placeholder="Bike Image Link"  value="<%= bikeImage%>">
                                   </div>
+                                  <%} %>
 								<br>
 								<center>
 									<button type="submit"
 										class="btn button button--red triangle triangle--12" id="submit"
-										value="SignUp">Add</button>
+										value="SignUp">Update</button>
 								</center>
 								<br>
 						

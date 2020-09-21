@@ -1,3 +1,11 @@
+<%@ page import="com.google.appengine.api.datastore.Query"%>
+<%@ page import="com.google.appengine.api.datastore.PreparedQuery"%>
+<%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
+<%@ page import="com.google.appengine.api.datastore.Entity"%>
+<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page import="com.google.appengine.api.datastore.Query.FilterOperator"%>
+<%@ page import="com.spring.user.UserDao"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" isELIgnored="false"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -6,6 +14,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome</title>
 <style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
 ul {
   list-style-type: none;
   margin: 0;
@@ -63,12 +75,16 @@ if(session.getAttribute("userEmail")==null)
 <ul>
   <li><a href="#"><%= email %></a></li>
   <li><a href="userLogout">Logout</a></li>
+  <li><a href="UserBookingDetails.jsp">Profile</a></li>
 </ul>
 
-<center><h2>Welcome <%= email %></h2></center>
+<center><h1>Booked Succesfully</h1></center>
 <hr>
+<center><h3>Here is your all booking details--</h3>
+<h2><a href="UserBookingDetails.jsp"></a></h2>
+</center>
 
-<center><h1><a href="ShowBikesForBooking.jsp">Show All Bikes</a></h1></center>
+
 
 
 

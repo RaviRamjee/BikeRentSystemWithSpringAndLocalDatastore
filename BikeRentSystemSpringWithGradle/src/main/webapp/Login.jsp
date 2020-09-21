@@ -86,12 +86,12 @@ li a:hover:not(.active) {
 										id="user-email" placeholder="user Id" />
 								</div> -->
 								 <div class="comment-form__input">
-									<input type="text" class="form-control" name="email"
+									<input type="email" required class="form-control" name="email"
 										id="user-email" placeholder="Email" />
 								</div>
 								<div class="comment-form__input">
-									<input type="text" class="form-control" name="password"
-										id="user-website" placeholder="Password" />
+									<input type="password" class="form-control" name="password"
+										id="user-website" placeholder="Password" required/>
 							    </div>
 						
 								<br>

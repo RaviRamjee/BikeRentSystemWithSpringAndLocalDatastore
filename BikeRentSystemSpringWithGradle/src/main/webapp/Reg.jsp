@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Registration</title>
 <style>
 ul {
   list-style-type: none;
@@ -84,23 +84,23 @@ li a:hover:not(.active) {
                                
 								<div class="comment-form__input">
 									<input type="text" class="form-control" name="name"
-										id="user-name" placeholder="Full Name" />
+										id="user-name" placeholder="Full Name" required/>
 								</div>
 								<div class="comment-form__input">
-									<input type="text" class="form-control" name="email"
+									<input type="email" required class="form-control" name="email"
 										id="user-email" placeholder="Email" />
 								</div>
 								<div class="comment-form__input">
-									<input type="text" class="form-control" name="password"
-										id="user-website" placeholder="Password" />
+									<input type="password" class="form-control" name="password"
+										id="user-website"  placeholder="Password" minlength="8" required/>
 							    </div>
 								<div class="comment-form__input">
 									<input type="text" class="form-control" name="phoneNo"
-										id="user-website" placeholder="Phone No" />
+										id="user-website" placeholder="Phone No" required/>
 							    </div>
 								<div class="comment-form__input">
 									<input type="text" class="form-control" name="address"
-										id="user-website" placeholder="address" />
+										id="user-website" placeholder="address" required/>
 								</div>
 								<br>
 								<center>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Admin Homepage</title>
 <style>
 ul {
   list-style-type: none;
@@ -15,7 +15,7 @@ ul {
 }
 
 li {
-  float: left;
+  float: right;
 }
 
 li a {
@@ -51,19 +51,24 @@ li a:hover:not(.active) {
 <body>
 
 
-<%if(session.getAttribute("adminEmail")==null)
+<%response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+if(session.getAttribute("adminEmail")==null)
 	{
 	    response.sendRedirect("Login.jsp");
 	}
 	%>
+	
+	<%
+	String email=(String)session.getAttribute("adminEmail");
+	%>
 <ul>
-  <li><a href="#">${email}</a></li>
+  <li><a href="AdminHomepage.jsp">Home</a></li>
   <li><a href="adminLogout">Logout</a></li>
+  <li><a href="#"><%= email %></a></li>
 </ul>
+<br>
+<jsp:include page='Sidebar.jsp'></jsp:include>
 
- <center><h3><a href="addBike.jsp">Add Bikes</a></h3></center>
- 
- 
  
  
  
