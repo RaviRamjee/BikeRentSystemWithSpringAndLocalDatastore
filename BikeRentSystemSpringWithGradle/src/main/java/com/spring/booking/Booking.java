@@ -1,11 +1,13 @@
 package com.spring.booking;
 
+import java.io.Serializable;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.spring.user.UserService;
 
 @Entity
-public class Booking {
+public class Booking implements Serializable{
 
 	@Id
 	String bookingId;

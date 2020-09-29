@@ -75,37 +75,46 @@ li a:hover:not(.active) {
 					<div class="col-md-5 col-md-offset-3">
 						<div class="contacts-form"
 							style="background-color: rgba(80, 54, 84, 0.6); height: 100%">
-							<!-- <a href="./UserDetails.html">Show Users</a>&nbsp <a href="./UpdateUserById.html">Update user</a>&nbsp <a href="./DeleteUser.html">Delete User</a> -->
 							<h1 style="font-size: 200%; color: White" class="blog-title">Registration</h1>
 							<div id="success"></div>
 
-							<form action="regUser" method="POST" id="contactForm">
+							<form onsubmit="return validation()" action="regUser" method="POST" id="contactForm">
 								
                                
 								<div class="comment-form__input">
 									<input type="text" class="form-control" name="name"
-										id="user-name" placeholder="Full Name" required/>
+										id="userName" placeholder="Full Name" required/>
+										<span id="uname"></span>
 								</div>
 								<div class="comment-form__input">
 									<input type="email" required class="form-control" name="email"
-										id="user-email" placeholder="Email" />
+										id="userEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Email" />
 								</div>
 								<div class="comment-form__input">
 									<input type="password" class="form-control" name="password"
-										id="user-website"  placeholder="Password" minlength="8" required/>
+										id="userPassword"  placeholder="Password" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+										title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
+							    </div>
+							    
+							    <div class="comment-form__input">
+									<input type="password" class="form-control" 
+										id="confirmPassword"  placeholder="confirm Password"  required/>
+										<span id="confirmPass"></span>
 							    </div>
 								<div class="comment-form__input">
-									<input type="text" class="form-control" name="phoneNo"
-										id="user-website" placeholder="Phone No" required/>
+									<input type="text" minlength="10" maxlength="10" class="form-control" name="phoneNo"
+										id="userPhone" placeholder="Phone No" required/>
+										<span id="mobile"></span>
 							    </div>
 								<div class="comment-form__input">
 									<input type="text" class="form-control" name="address"
-										id="user-website" placeholder="address" required/>
+										id="userAddress" minlength="5" placeholder="address" required/>
+										<span id="address"></span>
 								</div>
 								<br>
 								<center>
 									<button type="submit"
-										class="btn button button--red triangle triangle--12"
+										class="btn btn-primary"
 										value="SignUp">Sign Up</button>
 								</center>
 								<br>
@@ -118,5 +127,43 @@ li a:hover:not(.active) {
 				</div>
 			</div>
 	</section>
+	
+	<script type="text/javascript">
+	function validation()
+	{
+		var userName=document.getElementById('userName').value;
+		var userEmail=document.getElementById('userEmail').value;
+		var userPassword=document.getElementById('userPassword').value;
+		var confirmPassword=document.getElementById('confirmPassword').value;
+		var userPhone=document.getElementById('userPhone').value;
+		var userAddress=document.getElementById('userAddress').value;
+		
+		if(userName.length <= 2 || userName.length > 20){
+			document.getElementById('uname').innerHTML=" * user length must be between 2 and 20";
+			return false;
+			}
+		if(!isNaN(userName)){
+			document.getElementById('uname').innerHTML=" * only characters are allowed";
+			return false;
+			}
+		if(userPassword!=confirmPassword){
+			document.getElementById('confirmPass').innerHTML=" * password not matching";
+			return false;	
+		}
+		if(isNaN(userPhone)){
+			document.getElementById('mobile').innerHTML=" * user must write digits only";
+			return false;	
+		}
+		if(userPhone.length !=10){
+			document.getElementById('mobile').innerHTML=" * mobile number must be 10 digits only";
+			return false;	
+		}
+		if(!isNaN(userAddress)){
+			document.getElementById('address').innerHTML=" * only characters are allowed";
+			return false;
+		}
+		
+	}
+	</script>
 </body>
 </html>

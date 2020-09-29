@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Login </title>
 <style>
 ul {
   list-style-type: none;
@@ -63,7 +63,14 @@ li a:hover:not(.active) {
 			</div>
 		</div>
 	</div>
+<script type="text/javascript">
+function preback(){
+	window.history.forward();
+}
+setTimeout("preback()",0);
+window.onunload=function(){null};
 
+</script>
 <ul>
  <li><a href="Reg.jsp">Registration</a></li>
   <li><a href="Login.jsp">Login</a></li>
@@ -75,19 +82,15 @@ li a:hover:not(.active) {
 					<div class="col-md-5 col-md-offset-3">
 						<div class="contacts-form"
 							style="background-color: rgba(80, 54, 84, 0.6); height: 100%">
-							<!-- <a href="./UserDetails.html">Show Users</a>&nbsp <a href="./UpdateUserById.html">Update user</a>&nbsp <a href="./DeleteUser.html">Delete User</a> -->
+							
 							<h1 style="font-size: 200%; color: White" class="blog-title">Login</h1>
 							<div id="success"></div>
-
+   
 							<form action="loginUser" method="POST" id="contactForm">
 								
-                               <!-- <div class="comment-form__input">
-									<input type="text" class="form-control" name="id"
-										id="user-email" placeholder="user Id" />
-								</div> -->
 								 <div class="comment-form__input">
 									<input type="email" required class="form-control" name="email"
-										id="user-email" placeholder="Email" />
+										id="user-email" placeholder="Email" required/>
 								</div>
 								<div class="comment-form__input">
 									<input type="password" class="form-control" name="password"

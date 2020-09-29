@@ -48,6 +48,9 @@ compile group: 'org.apache.taglibs', name: 'taglibs-standard-impl', version: '1.
   // https://mvnrepository.com/artifact/com.google.guava/guava
 compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
   
+  // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+  
   
  }
  
@@ -60,7 +63,7 @@ automaticRestart = true
  // default
  // App Engine tasks configuration
   deploy {   // deploy configuration
-    projectId ='bike-rent-system'
+    projectId ='bigquery-hevo'
     version = '1'
   }
 }

@@ -64,5 +64,11 @@ public class BookingController {
 		mv.setViewName("UserBookingDetails");
 		return mv;
 	}
+	
+
+	@PostMapping(value = "/book-queue")
+	public void booking() {
+		
+	}
 
 }

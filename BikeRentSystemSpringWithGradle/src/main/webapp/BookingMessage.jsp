@@ -81,7 +81,8 @@ if(session.getAttribute("userEmail")==null)
 <center><h1>Booked Succesfully</h1></center>
 <hr>
 <center><h3>Here is your all booking details--</h3>
-<h2><a href="UserBookingDetails.jsp"></a></h2>
+<br>
+<h2><a href="UserBookingDetails.jsp">Click Here</a></h2>
 </center>
 
 

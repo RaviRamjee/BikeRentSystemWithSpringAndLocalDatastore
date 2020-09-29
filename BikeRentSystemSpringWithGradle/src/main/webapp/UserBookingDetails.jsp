@@ -132,6 +132,14 @@ li a:hover:not (.active ) {
 				bookingTime = e.getProperty("bookingTime").toString();
 		%>
 
+       <%if(bookingBikeId==null)
+    	   {
+    	     %>
+    	     <h3>You have no bookings....</h3>
+    	     <%
+    	     break;
+    	   }
+    	   %>
 		<tr>
 			<td><%= bookingBikeId %></td>
 			<td><%= bookingName %></td>
@@ -144,15 +152,16 @@ li a:hover:not (.active ) {
 			<td><%= bookingStatus %></td>
 			<td><%= bookingTariffSelected %></td>
 			<td><%= bookingTime %></td>
-			<td><a href="cancelBooking?bookingId=<%= bookingId %>"><button type="button" btnSelete_Click()>cancel</button></a></td>
+			<td><a href="cancelBooking?bookingId=<%= bookingId %>"><button type="button" onclick="btnSelect_Click()">cancel</button></a></td>
 		</tr>
 		<%} %>
 	</table>
+	<h3><p id="demo"></p></h3>
 	<script language="javascript">    
-	function btnSelete_Click() {
-	    var strconfirm = confirm("Are you sure you want to delete?");
+	function btnSelect_Click() {
+	    var strconfirm = confirm("Are you sure want to delete?");
 	    if (strconfirm == true) {
-	        return true;
+	    	document.getElementById("demo").innerHTML = "booking Cancelled..";
 	    }
 	}   
 </script> 

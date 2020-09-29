@@ -11,6 +11,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 
 public class UserService {
 
@@ -50,10 +53,18 @@ public class UserService {
 			 * --> comparing user's input email and password with the datastore value. -->if
 			 * temp is '1' means email and password is matching
 			 */
+			
 			if (email.equals(userEmail) && myHash.equals(userPassword)) {
 				temp = 1;
 			}
 		}
 		return temp;
+	}
+	
+	public void addTaskQueue(String email)
+	{
+		// Add the task to the default queue.
+	    Queue queue = QueueFactory.getQueue("reg-queue");
+	    queue.add(TaskOptions.Builder.withUrl("/reg-queue").param("email", email));
 	}
 }

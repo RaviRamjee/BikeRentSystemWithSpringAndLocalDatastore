@@ -1,11 +1,13 @@
 package com.spring.tariff;
 
+import java.io.Serializable;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.spring.utils.PasswordUtil;
 
 @Entity
-public class Tariff {
+public class Tariff implements Serializable {
 
 	@Id
 	String tariffId;

@@ -2,10 +2,11 @@
 <%@ page import="com.google.appengine.api.datastore.PreparedQuery"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
-<%@ page
-	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
-<%@ page
-	import="com.google.appengine.api.datastore.Query.FilterOperator"%>
+<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
+<%@ page import="com.google.appengine.api.datastore.Query.FilterOperator"%>
+<%@ page import="java.time.LocalDateTime"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -162,10 +163,10 @@ background-color
 </head>
 <body>
 	<%
-		response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+		/* response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
 		if (session.getAttribute("userEmail") == null) {
 			response.sendRedirect("Login.jsp");
-		}
+		} */
 	%>
 
 	<%
@@ -181,7 +182,7 @@ background-color
 			<b>Please fill Booking Details</b>
 		</h2>
 		<br>
-		<form action="userBooking" method="post" id="contactForm">
+		<form onsubmit="return validation()" action="userBooking" method="post" id="contactForm">
 			<%
 				String bikeId = request.getParameter("bikeId");
 
@@ -202,6 +203,19 @@ background-color
 				}
 			%>
 
+           <%
+           //getting current date
+           DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+   		   LocalDateTime now = LocalDateTime.now();
+   		   String minDate = dtf.format(now);
+   		   
+   		   //getting current time
+   		  long date = System.currentTimeMillis();
+   		  long date1 = System.currentTimeMillis()+1000*360*30;
+	      SimpleDateFormat sdf=new SimpleDateFormat("kk:mm");
+	      String minPickupTime = sdf.format(date);
+	      String minDropTime = sdf.format(date1);
+           %>
 
 
 			<div class="comment-form__input">
@@ -214,29 +228,15 @@ background-color
 				<div class="col-xs-12 col-sm-6 col-md-7">
 					<div class="comment-form__input">
 						<h5>Pickup Date:</h5>
-						<input type="date" class="formc" name="bookingPickupDate"
+						<input type="date" class="formc" name="bookingPickupDate" min="<%= minDate %>"
 							id="bookingPickupDate" required>
 					</div>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-5">
 					<div class="comment-form__input">
 						<h5>Pickup Time:</h5>
-						<select name="bookingPickupTime" id="bookingPickupTime"
+						<input type="time" name="bookingPickupTime" id="bookingPickupTime" min="<%= minPickupTime %>"
 							class="formc" required>
-							<option value="9:00">9:00AM</option>
-							<option value="10:00">10:00AM</option>
-							<option value="11:00">11:00AM</option>
-							<option value="12:00">12:00AM</option>
-							<option value="13:00">1:00PM</option>
-							<option value="14:00">2:00PM</option>
-							<option value="15:00">3:00PM</option>
-							<option value="16:00">4:00PM</option>
-							<option value="17:00">5:00PM</option>
-							<option value="18:00">6:00PM</option>
-							<option value="19:00">7:00PM</option>
-							<option value="20:00">8:00PM</option>
-							<option value="21:00">9:00PM</option>
-						</select>
 					</div>
 				</div>
 			</div>
@@ -245,29 +245,15 @@ background-color
 				<div class="col-xs-12 col-sm-6 col-md-7">
 					<div class="comment-form__input">
 						<h5>Drop Date:</h5>
-						<input type="date" class="formc" name="bookingDropDate"
+						<input type="date" class="formc" name="bookingDropDate" min="<%= minDate %>"
 							id="bookingDropDate" required>
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-5">
 					<div class="comment-form__input">
 						<h5>Drop time:</h5>
-						<select name="bookingDropTime" id="bookingDropTime" class="formc"
+						<input type="time" name="bookingDropTime" id="bookingDropTime" class="formc" min="<%= minDropTime %>"
 							required>
-							<option value="9:00">9:00AM</option>
-							<option value="10:00">10:00AM</option>
-							<option value="11:00">11:00AM</option>
-							<option value="12:00">12:00AM</option>
-							<option value="13:00">1:00PM</option>
-							<option value="14:00">2:00PM</option>
-							<option value="15:00">3:00PM</option>
-							<option value="16:00">4:00PM</option>
-							<option value="17:00">5:00PM</option>
-							<option value="18:00">6:00PM</option>
-							<option value="19:00">7:00PM</option>
-							<option value="20:00">8:00PM</option>
-							<option value="21:00">9:00PM</option>
-						</select>
 					</div>
 				</div>
 			</div>
@@ -340,7 +326,7 @@ background-color
 					<h5>Pickup Station:</h5>
 					<select name="bookingBranch" id="bookingBranch" class="formc"
 						required>
-						<option value="btm Layout">btm Layout</option>
+						<option value="btm Layout">BTM Layout</option>
 						<option value="Marathalli">Marathalli</option>
 						<option value="WhiteField">WhiteField</option>
 						<option value="Koremangala">Koremangala</option>
@@ -351,10 +337,11 @@ background-color
 			<br>
 			<div class="col-md-9 col-md-offset-0">
 				<button type="submit" value="submit"
-					class="btn button button--red triangle triangle--12" id="submit">Book</button>
+					class="btn btn-primary" id="submit">Book</button>
 				<br> <br> <br>
 			</div>
 		</form>
 	</center>
+	
 </body>
 </html>

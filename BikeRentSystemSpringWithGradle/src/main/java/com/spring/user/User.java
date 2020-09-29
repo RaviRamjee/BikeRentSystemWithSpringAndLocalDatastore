@@ -1,11 +1,13 @@
 package com.spring.user;
 
+import java.io.Serializable;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.spring.utils.PasswordUtil;
 
 @Entity
-public class User {
+public class User implements Serializable{
 
 	@Id
 	private String userId;
@@ -44,6 +46,7 @@ public class User {
 		return "User [userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", userPassword="
 				+ userPassword + ", userPhoneNo=" + userPhoneNo + ", userAddress=" + userAddress + "]";
 	}
+	
 
 	public String getUserId() {
 		return userId;

@@ -3,6 +3,7 @@ package com.spring.user;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.spring.utils.EmailUtil;
 import com.spring.utils.PasswordUtil;
 
@@ -36,6 +40,8 @@ public class UserController {
 	protected ModelAndView regUser(@RequestParam("name") String name, @RequestParam("email") String email,
 			@RequestParam("password") String password, @RequestParam("phoneNo") String phoneNo,
 			@RequestParam("address") String address, HttpServletRequest request, HttpServletResponse response) {
+		
+		service.addTaskQueue(email); //calling addTaskQueue method for add task queue for registration 
 
 		boolean validation = EmailUtil.isValid(email);
 		if (validation == true) {
@@ -52,6 +58,7 @@ public class UserController {
 			} else {
 				uImpl.insert(user);
 				mv.setViewName("Login"); // setting view name
+				EmailUtil.regMail(user,email);
 			}
 		} else {
 			// redirecting to registration page when validation is false
@@ -70,7 +77,7 @@ public class UserController {
 														// comparison
 
 		// comparing email and password for admin and redirect to the admin home page
-		if (email.equals("ravirajgzp@gmail.com") && password.equals("12345678")) {
+		if (email.equals("ravirajgzp@gmail.com") && password.equals("Ravi1234@")) {
 			// creating session object and set attribute
 			HttpSession session = request.getSession();
 			session.setAttribute("adminEmail", email);
@@ -96,6 +103,14 @@ public class UserController {
 		}
 
 		return mv;
+	}
+	
+	@PostMapping(value = "/reg-queue")
+	protected void regQueue(@RequestParam("email") String email) {
+	
+		String callRequest="Got a Signup Subscriber Request for Email ID : "+email; 
+		
+		System.out.println(callRequest);
 	}
 
 }

@@ -1,11 +1,13 @@
 package com.spring.bike;
 
+import java.io.Serializable;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.spring.user.UserService;
 
 @Entity
-public class Bike {
+public class Bike implements Serializable {
 	@Id
 	private String bikeId;
 	private String tariffId;
